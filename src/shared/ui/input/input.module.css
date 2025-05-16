@@ -1,0 +1,11 @@
+.input {
+    min-height: 28px;
+    padding: 10px;
+    font-size: 18px;
+    border: 2px solid #00fdfd;
+    margin-top: 6px;
+    width: 100%;
+}
+.input.error {
+    border: 2px solid #ff0000;
+}

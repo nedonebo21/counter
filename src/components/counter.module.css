@@ -1,0 +1,62 @@
+.counter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: rgb(0, 0, 0);
+
+    border: 2px solid rgb(60, 230, 255);
+    padding: 60px;
+}
+
+.counterSettings {
+    padding: 60px;
+    display: grid;
+    gap: 20px;
+    border: 2px solid rgb(60, 230, 255);
+    border-radius: 10px;
+}
+.counterDisplay {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 2px solid rgb(60, 230, 255);
+    border-radius: 10px;
+}
+.btnBlock {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+.countBlock {
+    /*background-color: #9c39ff;*/
+    /*min-height: 100%;*/
+    background-image: url("https://i.scdn.co/image/ab67616d0000b2739af0f4bc21f6e076a29c0d39");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: 900;
+}
+.countBlock div {
+    text-shadow:
+            1px 1px 2px black,
+            0 0 1em black,
+            0 0 0.2em black;
+}
+.countBlock.maxValueCount {
+    background-image: url("https://i.scdn.co/image/ab67616d00001e02d30a6b3dc97ed56ee9f4391f");
+    background-position: center bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.maxValue {
+    color: #37ff00;
+}
+.error {
+    color: red;
+}
