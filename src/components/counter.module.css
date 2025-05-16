@@ -12,7 +12,7 @@
     display: grid;
     gap: 20px;
     border: 2px solid rgb(60, 230, 255);
-    border-radius: 10px;
+    border-radius: 10px 0px 0px 10px;
 }
 .counterDisplay {
     padding: 40px;
@@ -20,7 +20,8 @@
     flex-direction: column;
     gap: 20px;
     border: 2px solid rgb(60, 230, 255);
-    border-radius: 10px;
+    border-left: none;
+    border-radius: 0px 10px 10px 0px;
 }
 .btnBlock {
     display: flex;
