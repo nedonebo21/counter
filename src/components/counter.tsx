@@ -6,22 +6,24 @@ import {useState} from "react";
 export type StatusType = "preparing" | "counting" | null
 
 type Props = {
-    minValue?: number
-    maxValue?: number
+    min?: number
+    max?: number
 }
-type ValuesType = {
+export type ValuesType = {
     minDefaultValue: number
     maxDefaultValue: number
 }
 const defaultValues: ValuesType = {
-    minDefaultValue: 0,
-    maxDefaultValue: 5
+    minDefaultValue: 2,
+    maxDefaultValue: 10
 }
 
 export const Counter = (props: Props) => {
+    const {minDefaultValue, maxDefaultValue} = defaultValues
+
     const [count, setCount] = useState<number>(0)
-    const [minValue, setMinValue] = useState<number>(props.minValue ?? defaultValues.minDefaultValue)
-    const [maxValue, setMaxValue] = useState<number>(props.maxValue ?? defaultValues.maxDefaultValue)
+    const [minValue, setMinValue] = useState<number>(props.min ?? minDefaultValue)
+    const [maxValue, setMaxValue] = useState<number>(props.max ?? maxDefaultValue)
     const [error, setError] = useState<string | null>(null)
     const [status, setStatus] = useState<StatusType>("preparing")
 
@@ -35,6 +37,8 @@ export const Counter = (props: Props) => {
     return (
         <div className={s.counter}>
             <CounterSettings
+                min={props.min} max={props.max}
+                defaultValues={defaultValues}
                 setStatus={setStatus}
                 status={status}
                 error={error}

@@ -2,23 +2,29 @@ import s from '../counter.module.css'
 import {Input} from "../../shared/ui/input/input.tsx";
 import {Button} from "../../shared/ui/button/button.tsx";
 import {useState} from "react";
-import type {StatusType} from "../counter.tsx";
+import type {StatusType, ValuesType} from "../counter.tsx";
 type Props = {
     updateCounter: (minValue: number, maxValue: number) => void
     setError: (error: string | null) => void
     error: string | null
     setStatus: (status: StatusType) => void
     status: StatusType
+    defaultValues: ValuesType
+    min: number | undefined
+    max: number | undefined
 }
 
 export const CounterSettings = (props: Props) => {
-    const [minValueSettings, setMinValueSettings] = useState<number>(0)
-    const [maxValueSettings, setMaxValueSettings] = useState<number>(5)
+    const [minValueSettings, setMinValueSettings] = useState<number>(props.min ?? props.defaultValues.minDefaultValue)
+    const [maxValueSettings, setMaxValueSettings] = useState<number>(props.max ?? props.defaultValues.maxDefaultValue)
 
 
     const handleMinChange = (value: number) => {
         if (value <= -1 ) {
             props.setError("incorrect value")
+            if (value === -1) {
+                setMinValueSettings(value)
+            }
             return
         }
         props.setError(null)
@@ -28,6 +34,9 @@ export const CounterSettings = (props: Props) => {
     const handleMaxChange = (value:number) => {
         if (value <= -1) {
             props.setError("incorrect value")
+            if( value === -1) {
+                setMaxValueSettings(value)
+            }
             return
         }
         props.setError(null)
@@ -36,7 +45,7 @@ export const CounterSettings = (props: Props) => {
     }
 
     const handleSet = () => {
-        if (minValueSettings >= maxValueSettings){
+        if (minValueSettings >= maxValueSettings || minValueSettings <= -1 || maxValueSettings <= -1) {
             props.setError("incorrect value")
             props.setStatus(null)
             return
@@ -47,7 +56,7 @@ export const CounterSettings = (props: Props) => {
         props.setError(null)
     }
 
-    const isSetDisabled = !!props.error || props.status === 'counting'
+    const isSetDisabled = !!props.error || props.status === 'counting' || minValueSettings >= maxValueSettings
 
 
     return (
