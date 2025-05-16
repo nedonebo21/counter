@@ -13,7 +13,7 @@ export const Input = (props: Props) => {
         const currentValue = parseInt(e.target.value, 10)
         props.callback(currentValue)
     }
-    const isValueIncorrect = props.error ? s.input + ' ' + s.error : s.input
+    const isValueIncorrect = props.value <= -1 ? s.input + ' ' + s.error : s.input
 
     return (
         <>

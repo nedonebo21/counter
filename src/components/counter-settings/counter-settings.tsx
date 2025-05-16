@@ -20,7 +20,8 @@ export const CounterSettings = (props: Props) => {
 
 
     const handleMinChange = (value: number) => {
-        if (value <= -1 ) {
+        if (value <= -1) {
+            props.setStatus(null)
             props.setError("incorrect value")
             if (value === -1) {
                 setMinValueSettings(value)
@@ -33,6 +34,7 @@ export const CounterSettings = (props: Props) => {
     }
     const handleMaxChange = (value:number) => {
         if (value <= -1) {
+            props.setStatus(null)
             props.setError("incorrect value")
             if( value === -1) {
                 setMaxValueSettings(value)
