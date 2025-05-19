@@ -27,8 +27,7 @@ export const CounterSettings = (props: Props) => {
 
     const handleValueChange = (value: number, type: 'min' | 'max') => {
         if (value <= -1) {
-            setStatus(null)
-            setError("incorrect value")
+            setError('incorrect value')
             if (value === -1){
                 setValuesSettings({
                     ...valuesSettings,
@@ -38,7 +37,6 @@ export const CounterSettings = (props: Props) => {
             return
         }
         setError(null)
-        setStatus("preparing")
         setValuesSettings({
             ...valuesSettings,
             [type]: value
@@ -47,13 +45,12 @@ export const CounterSettings = (props: Props) => {
 
     const handleSet = () => {
         if (min >= max || min <= -1 || max <= -1) {
-            setError("incorrect value")
-            setStatus(null)
+            setError('incorrect value')
             return
         }
 
         updateCounter(min, max)
-        setStatus("counting")
+        setStatus('counting')
         setError(null)
     }
 
@@ -62,17 +59,18 @@ export const CounterSettings = (props: Props) => {
 
     return (
         <div className={s.counterSettings}>
+            {error && <div className={s.error}>{error}</div> || status === 'preparing' && <div>enter values and press 'set'</div>}
             <div>
                 <Input
                     error={error}
-                    name={"min"}
+                    name={'min'}
                     callback={(value) => handleValueChange(value, 'min')}
                     value={min}
                     title={'Min Value'}/>
             </div>
             <div>
                 <Input error={error}
-                       name={"max"}
+                       name={'max'}
                        callback={(value) => handleValueChange(value, 'max')}
                        value={max}
                        title={'Max Value'}/>

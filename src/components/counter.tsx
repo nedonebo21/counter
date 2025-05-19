@@ -26,10 +26,10 @@ export const Counter = (props: Props) => {
         min: props.min ?? minDefaultValue,
         max: props.max ?? maxDefaultValue
     })
-    const {min,max} = values
+    const {min, max} = values
 
     const [error, setError] = useState<string | null>(null)
-    const [status, setStatus] = useState<StatusType>("preparing")
+    const [status, setStatus] = useState<StatusType>('preparing')
 
     const updateCounter = (min: number, max: number) => {
         setValues({
@@ -40,24 +40,38 @@ export const Counter = (props: Props) => {
 
         setCount(min)
     }
+    const counterBlockClass = () => {
+        const classesArr = [s.counter]
+        if(status === 'preparing') return classesArr.join(' ')
+        if(status === 'counting') classesArr.push(s.counting)
+        if(count === max) classesArr.push(s.maxCount)
+        return classesArr.join(' ')
+    }
 
     return (
-        <div className={s.counter}>
-            <CounterSettings
-                min={props.min} max={props.max}
-                defaultValues={defaultValues}
-                setStatus={setStatus}
-                status={status}
-                error={error}
-                setError={setError}
-                updateCounter={updateCounter}/>
-            <CounterDisplay
-                status={status}
-                error={error}
-                minValue={min}
-                maxValue={max}
-                setCount={setCount}
-                count={count}/>
+        <div className={counterBlockClass()}>
+            {
+                status === 'preparing' &&
+                    <CounterSettings
+                        min={props.min} max={props.max}
+                        defaultValues={defaultValues}
+                        setStatus={setStatus}
+                        status={status}
+                        error={error}
+                        setError={setError}
+                        updateCounter={updateCounter}/>
+            }
+            {
+                status === 'counting' &&
+                <CounterDisplay
+                    status={status}
+                    error={error}
+                    minValue={min}
+                    maxValue={max}
+                    setCount={setCount}
+                    setStatus={setStatus}
+                    count={count}/>
+            }
         </div>
     )
 }
