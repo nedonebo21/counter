@@ -53,7 +53,8 @@ export const Counter = (props: Props) => {
             {
                 status === 'preparing' &&
                     <CounterSettings
-                        min={props.min} max={props.max}
+                        minValueCount={min}
+                        maxValueCount={max}
                         defaultValues={defaultValues}
                         setStatus={setStatus}
                         status={status}

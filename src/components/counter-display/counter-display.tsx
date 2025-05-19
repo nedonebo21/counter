@@ -33,7 +33,7 @@ export const CounterDisplay = (props: Props) => {
         }
         setCount(minValue)
     }
-    const handleBack = () => {
+    const handleSettings = () => {
         setStatus('preparing')
     }
     // const countRender = error
@@ -62,7 +62,7 @@ export const CounterDisplay = (props: Props) => {
                 <Button disabled={isDecDisabled} onClick={handleDecrement}>dec</Button>
                 <Button disabled={isResetDisabled} onClick={handleReset}>reset</Button>
 
-                <Button onClick={handleBack}>back</Button>
+                <Button onClick={handleSettings}>settings</Button>
             </div>
         </div>
     )

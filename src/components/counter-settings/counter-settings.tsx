@@ -3,6 +3,7 @@ import {Input} from "../../shared/ui/input/input.tsx";
 import {Button} from "../../shared/ui/button/button.tsx";
 import {useState} from "react";
 import type {StatusType, ValuesType} from "../counter.tsx";
+
 type Props = {
     updateCounter: (minValue: number, maxValue: number) => void
     setError: (error: string | null) => void
@@ -10,56 +11,60 @@ type Props = {
     setStatus: (status: StatusType) => void
     status: StatusType
     defaultValues: ValuesType
-    min: number | undefined
-    max: number | undefined
+    minValueCount: number
+    maxValueCount: number
 }
 
 export const CounterSettings = (props: Props) => {
-    const {updateCounter, setError, error, setStatus, status, defaultValues} = props
+    const {updateCounter, setError, error, setStatus, status, minValueCount, maxValueCount} = props
 
 
     const [valuesSettings, setValuesSettings] = useState({
-        min: props.min ?? defaultValues.minDefaultValue,
-        max: props.max ?? defaultValues.maxDefaultValue,
+        min: minValueCount,
+        max: maxValueCount,
     })
-    const {min,max} = valuesSettings
+    const {min, max} = valuesSettings
 
 
     const handleValueChange = (value: number, type: 'min' | 'max') => {
+        const inputValues = {
+            ...valuesSettings,
+            [type]: value
+        }
         if (value <= -1) {
             setError('incorrect value')
-            if (value === -1){
-                setValuesSettings({
-                    ...valuesSettings,
-                    [type]: value
-                })
+            if (value === -1) {
+                setValuesSettings(inputValues)
             }
             return
         }
-        setError(null)
-        setValuesSettings({
-            ...valuesSettings,
-            [type]: value
-        })
+        if (inputValues.min >= inputValues.max || isNaN(inputValues.min) || isNaN(inputValues.max)) {
+            setError('incorrect value')
+        } else {
+            setError(null)
+        }
+        setValuesSettings(inputValues)
     }
 
     const handleSet = () => {
         if (min >= max || min <= -1 || max <= -1) {
-            setError('incorrect value')
             return
         }
 
         updateCounter(min, max)
         setStatus('counting')
-        setError(null)
+    }
+    const handleBack = () => {
+        setStatus('counting')
     }
 
-    const isSetDisabled = !!error || status === 'counting' || min >= max
+    const isSaveDisabled = !!error || min >= max
 
 
     return (
         <div className={s.counterSettings}>
-            {error && <div className={s.error}>{error}</div> || status === 'preparing' && <div>enter values and press 'set'</div>}
+            {error && <div className={s.error}>{error}</div> || status === 'preparing' &&
+                <div>enter values and press 'set'</div>}
             <div>
                 <Input
                     error={error}
@@ -76,7 +81,8 @@ export const CounterSettings = (props: Props) => {
                        title={'Max Value'}/>
             </div>
             <div className={s.btnBlock}>
-                <Button disabled={isSetDisabled} onClick={handleSet}>set</Button>
+                <Button onClick={handleBack}>back</Button>
+                <Button disabled={isSaveDisabled} onClick={handleSet}>save</Button>
             </div>
         </div>
     )
