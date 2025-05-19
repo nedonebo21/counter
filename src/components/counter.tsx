@@ -22,16 +22,23 @@ export const Counter = (props: Props) => {
     const {minDefaultValue, maxDefaultValue} = defaultValues
 
     const [count, setCount] = useState<number>(0)
-    const [minValue, setMinValue] = useState<number>(props.min ?? minDefaultValue)
-    const [maxValue, setMaxValue] = useState<number>(props.max ?? maxDefaultValue)
+    const [values, setValues] = useState({
+        min: props.min ?? minDefaultValue,
+        max: props.max ?? maxDefaultValue
+    })
+    const {min,max} = values
+
     const [error, setError] = useState<string | null>(null)
     const [status, setStatus] = useState<StatusType>("preparing")
 
-    const updateCounter = (minValue: number, maxValue: number) => {
-        setMinValue(minValue)
-        setMaxValue(maxValue)
+    const updateCounter = (min: number, max: number) => {
+        setValues({
+            ...values,
+            min,
+            max
+        })
 
-        setCount(minValue)
+        setCount(min)
     }
 
     return (
@@ -47,8 +54,8 @@ export const Counter = (props: Props) => {
             <CounterDisplay
                 status={status}
                 error={error}
-                minValue={minValue}
-                maxValue={maxValue}
+                minValue={min}
+                maxValue={max}
                 setCount={setCount}
                 count={count}/>
         </div>

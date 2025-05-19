@@ -1,24 +1,27 @@
 import s from './input.module.css'
 import type {ChangeEvent} from "react";
 
-type Props = {
+type InputProps = {
     title: string
     value: number
     callback: (value: number) => void
     error: string | null
+    name:string
 }
 
-export const Input = (props: Props) => {
+export const Input = (props: InputProps) => {
+    const {title,value,callback,name} = props
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const currentValue = parseInt(e.target.value, 10)
-        props.callback(currentValue)
+        callback(currentValue)
     }
-    const isValueIncorrect = props.value <= -1 ? s.input + ' ' + s.error : s.input
+    const isValueIncorrect = value <= -1 ? s.input + ' ' + s.error : s.input
 
     return (
         <>
-            <div>{props.title}:</div>
-            <input className={isValueIncorrect} value={props.value} onChange={handleChange} type="number"/>
+            <div>{title}:</div>
+            <input className={isValueIncorrect} name={name} value={value} onChange={handleChange} type="number"/>
         </>
     )
 }
