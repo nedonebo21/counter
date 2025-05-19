@@ -1,30 +1,50 @@
 .counter {
-    display: grid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 16px;
-    grid-template-columns: 1fr 1fr;
-    background-color: rgb(0, 0, 0);
+    width: 500px;
+    height: 600px;
+    background-image: url("https://cs13.pikabu.ru/post_img/2024/03/16/7/171058378515879414.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 
     border: 2px solid rgb(60, 230, 255);
-    padding: 60px;
+    padding: 20px;
 }
-
+.counter.counting {
+    background-image: url("https://sun9-43.userapi.com/c909218/u581036802/d5/-3/x_d7fe7bc303.jpg")
+}
+.counter.maxCount {
+    background-image: url("https://sun9-38.userapi.com/c909328/u5300612/d30/-3/x_5894130559.jpg");
+}
 .counterSettings {
-    padding: 60px;
-    display: grid;
-    gap: 20px;
+    width: 400px;
+    height: 360px;
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
     border: 2px solid rgb(60, 230, 255);
     border-radius: 10px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.7);
 }
 .counterDisplay {
-    padding: 40px;
+    width: 400px;
+    height: 360px;
+    padding: 20px;
     display: flex;
+    gap: 16px;
     flex-direction: column;
-    gap: 20px;
     border: 2px solid rgb(60, 230, 255);
     border-radius: 10px;
+    background-color: rgba(0,0,0,0.7);
 }
 .btnBlock {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
 }
