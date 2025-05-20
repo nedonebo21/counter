@@ -26,10 +26,14 @@
     display: flex;
     gap: 16px;
     flex-direction: column;
+    justify-content: center;
     border: 2px solid rgb(60, 230, 255);
     border-radius: 10px;
     text-align: center;
     background-color: rgba(0,0,0,0.7);
+}
+.setMessage {
+    text-align: center;
 }
 .counterDisplay {
     width: 400px;
@@ -80,4 +84,5 @@
 }
 .error {
     color: red;
+    text-align: center;
 }
