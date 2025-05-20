@@ -30,6 +30,7 @@ export const Counter = (props: Props) => {
 
     const [error, setError] = useState<string | null>(null)
     const [status, setStatus] = useState<StatusType>('preparing')
+    const [isFirstEntry, setIsFirstEntry] = useState(true)
 
     const updateCounter = (min: number, max: number) => {
         setValues({
@@ -39,11 +40,15 @@ export const Counter = (props: Props) => {
         })
 
         setCount(min)
+        setIsFirstEntry(false)
     }
+    const isStatusCounting = status === 'counting'
+    const isStatusPreparing = status === 'preparing'
+
     const counterBlockClass = () => {
         const classesArr = [s.counter]
-        if(status === 'preparing') return classesArr.join(' ')
-        if(status === 'counting') classesArr.push(s.counting)
+        if(isStatusPreparing) return classesArr.join(' ')
+        if(isStatusCounting) classesArr.push(s.counting)
         if(count === max) classesArr.push(s.maxCount)
         return classesArr.join(' ')
     }
@@ -51,19 +56,20 @@ export const Counter = (props: Props) => {
     return (
         <div className={counterBlockClass()}>
             {
-                status === 'preparing' &&
+                isStatusPreparing &&
                     <CounterSettings
                         minValueCount={min}
                         maxValueCount={max}
                         defaultValues={defaultValues}
                         setStatus={setStatus}
-                        status={status}
                         error={error}
                         setError={setError}
-                        updateCounter={updateCounter}/>
+                        updateCounter={updateCounter}
+                        isFirstEntry={isFirstEntry}
+                    />
             }
             {
-                status === 'counting' &&
+                isStatusCounting &&
                 <CounterDisplay
                     status={status}
                     error={error}
@@ -71,6 +77,7 @@ export const Counter = (props: Props) => {
                     maxValue={max}
                     setCount={setCount}
                     setStatus={setStatus}
+                    isStatusPreparing={isStatusPreparing}
                     count={count}/>
             }
         </div>

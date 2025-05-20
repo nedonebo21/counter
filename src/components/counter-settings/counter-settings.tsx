@@ -9,14 +9,14 @@ type Props = {
     setError: (error: string | null) => void
     error: string | null
     setStatus: (status: StatusType) => void
-    status: StatusType
     defaultValues: ValuesType
     minValueCount: number
     maxValueCount: number
+    isFirstEntry: boolean
 }
 
 export const CounterSettings = (props: Props) => {
-    const {updateCounter, setError, error, setStatus, status, minValueCount, maxValueCount} = props
+    const {updateCounter, setError, error, setStatus, minValueCount, maxValueCount,isFirstEntry} = props
 
 
     const [valuesSettings, setValuesSettings] = useState({
@@ -32,14 +32,14 @@ export const CounterSettings = (props: Props) => {
             [type]: value
         }
         if (value <= -1) {
-            setError('incorrect value')
+            setError('value cannot be negative')
             if (value === -1) {
                 setValuesSettings(inputValues)
             }
             return
         }
         if (inputValues.min >= inputValues.max || isNaN(inputValues.min) || isNaN(inputValues.max)) {
-            setError('incorrect value')
+            setError('max value must be greater than min')
         } else {
             setError(null)
         }
@@ -58,13 +58,18 @@ export const CounterSettings = (props: Props) => {
         setStatus('counting')
     }
 
-    const isSaveDisabled = !!error || min >= max
+    const inputValuesUnchanged = min === minValueCount && max === maxValueCount
+    const isSaveDisabled = !!error || min >= max || (!isFirstEntry && inputValuesUnchanged)
 
 
     return (
         <div className={s.counterSettings}>
-            {error && <div className={s.error}>{error}</div> || status === 'preparing' &&
-                <div>enter values and press 'set'</div>}
+            {/*{error && <div className={s.error}>{error}</div> || !isSaveDisabled &&*/}
+            {/*    <div className={s.setMessage}>enter values and press 'set'</div>*/}
+            {/*}*/}
+            <div className={error ? s.error : s.setMessage}>
+                {error ? error : !isSaveDisabled ? `enter values and press 'set'` : 'counter settings'}
+            </div>
             <div>
                 <Input
                     error={error}
@@ -81,7 +86,7 @@ export const CounterSettings = (props: Props) => {
                        title={'Max Value'}/>
             </div>
             <div className={s.btnBlock}>
-                <Button onClick={handleBack}>back</Button>
+                <Button disabled={isFirstEntry} onClick={handleBack}>back</Button>
                 <Button disabled={isSaveDisabled} onClick={handleSet}>save</Button>
             </div>
         </div>

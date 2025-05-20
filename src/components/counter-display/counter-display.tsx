@@ -10,25 +10,26 @@ type Props = {
     error: string | null
     setStatus: (status: 'preparing' | 'counting') => void
     status: StatusType
+    isStatusPreparing: boolean
 }
 
 export const CounterDisplay = (props: Props) => {
-    const {count, setCount, minValue, maxValue, error, status, setStatus} = props
+    const {count, setCount, minValue, maxValue, error, setStatus,isStatusPreparing} = props
 
     const handleIncrement = () => {
-        if (count === maxValue || status === 'preparing') {
+        if (count === maxValue || isStatusPreparing) {
             return
         }
         setCount(props.count + 1)
     }
     const handleDecrement = () => {
-        if (count === minValue || status === 'preparing') {
+        if (count === minValue || isStatusPreparing) {
             return
         }
         setCount(props.count - 1)
     }
     const handleReset = () => {
-        if (count === minValue || status === 'preparing') {
+        if (count === minValue || isStatusPreparing) {
             return
         }
         setCount(minValue)
@@ -42,7 +43,7 @@ export const CounterDisplay = (props: Props) => {
 
     const blockRender = count === maxValue ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
 
-    const isErrorStatus = status === 'preparing' || !!error
+    const isErrorStatus = isStatusPreparing || !!error
 
     const isIncDisabled = isErrorStatus || count === maxValue
     const isDecDisabled = isErrorStatus || count === minValue
@@ -52,9 +53,6 @@ export const CounterDisplay = (props: Props) => {
     return (
         <div className={s.counterDisplay}>
             <div className={blockRender}>
-                {/*{(status === 'preparing' && <div>enter values and press 'set'</div>)*/}
-                {/*    || countRender*/}
-                {/*}*/}
                 <div className={count === maxValue ? s.maxValue : ''}>{count}</div>
             </div>
             <div className={s.btnBlock}>
