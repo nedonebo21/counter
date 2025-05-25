@@ -1,6 +1,6 @@
 import s from '../counter.module.css'
-import {Input} from "../../shared/ui/input/input.tsx";
-import {Button} from "../../shared/ui/button/button.tsx";
+import {Input} from "../../../shared/ui/input/input.tsx";
+import {Button} from "../../../shared/ui/button/button.tsx";
 import {useState} from "react";
 import type {StatusType, ValuesType} from "../counter.tsx";
 

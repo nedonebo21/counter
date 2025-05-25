@@ -1,5 +1,5 @@
 import s from '../counter.module.css'
-import {Button} from "../../shared/ui/button/button.tsx";
+import {Button} from "../../../shared/ui/button/button.tsx";
 import type {StatusType} from "../counter.tsx";
 
 type Props = {

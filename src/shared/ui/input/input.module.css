@@ -7,5 +7,6 @@
     width: 100%;
 }
 .input.error {
+    color: red;
     border: 2px solid #ff0000;
 }

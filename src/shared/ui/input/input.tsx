@@ -5,18 +5,18 @@ type InputProps = {
     title: string
     value: number
     callback: (value: number) => void
-    error: string | null
-    name:string
+    error?: string | null
+    name: string
 }
 
 export const Input = (props: InputProps) => {
-    const {title,value,callback,name} = props
+    const {title, value, callback, name, error} = props
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const currentValue = parseInt(e.target.value, 10)
         callback(currentValue)
     }
-    const isValueIncorrect = value <= -1 || props.error ? s.input + ' ' + s.error : s.input
+    const isValueIncorrect =  error ? `${s.input} ${s.error}` : s.input
 
     return (
         <>
