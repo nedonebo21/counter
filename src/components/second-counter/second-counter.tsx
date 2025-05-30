@@ -28,7 +28,7 @@ export const SecondCounter = (props: Props) => {
     const [error, setError] = useState<string | null>(null)
     const [status, setStatus] = useState<StatusType>('counting')
     const [isChanged, setIsChanged] = useState<boolean>(false)
-    const isStatusPreparing = status === 'preparing'
+    const isStatusPreparing = status === 'preparing' || isChanged
     const isStatusCounting = status === 'counting'
 
     const updateCounter = (min: number, max: number) => {

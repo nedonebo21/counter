@@ -32,7 +32,7 @@ export const SecondCounterDisplay = (props: Props) => {
 
     return (
         <div className={s.counterDisplay}>
-            <div className={blockRender}>
+            <div className={isChanged ? s.countBlock : blockRender}>
                 {isError && <div className={s.error}>{props.error}</div>}
                 {isMessage && <div className={s.setMessage}>set values and press 'set'</div>}
                 {!isMessage && !isError && <div className={isMaxValue ? s.maxValue : ''}>{count}</div>}
