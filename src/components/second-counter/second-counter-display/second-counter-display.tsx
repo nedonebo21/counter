@@ -1,17 +1,18 @@
 import s from '../second-counter.module.css'
 import {Button} from "../../../shared/ui/button/button.tsx";
+import type {InputErrorsType} from "../second-counter.tsx";
 
 type Props = {
     count: number
     setCount: (count: number) => void
     minValue: number
     maxValue: number
-    error: string | null
+    inputError: InputErrorsType
     isChanged: boolean
 }
 
 export const SecondCounterDisplay = (props: Props) => {
-    const {count, setCount, error, isChanged} = props
+    const {count, setCount, inputError, isChanged} = props
 
     const handleIncrement = () => {
         if (count < props.maxValue) setCount(count + 1)
@@ -22,9 +23,23 @@ export const SecondCounterDisplay = (props: Props) => {
     const handleReset = () => {
         if (count > props.minValue) setCount(props.minValue)
     }
+
+    const errorToShow = () => {
+        if (inputError.lastChanged === 'min' && inputError.min){
+            return inputError.min
+        } else if (inputError.lastChanged === 'max' && inputError.max){
+            return inputError.max
+        } else if (inputError.min){
+            return inputError.min
+        } else if (inputError.max){
+            return inputError.max
+        }
+        return
+    }
+
     const blockRender = count === props.maxValue ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
-    const isError = !!props.error
-    const isMessage = !error && isChanged
+    const isError = !!Object.keys(inputError).length
+    const isMessage = !Object.keys(inputError).length && isChanged
     const isMaxValue = count === props.maxValue
     const isIncDisabled = count === props.maxValue || isError || isChanged
     const isDecDisabled = count === props.minValue || isError
@@ -33,7 +48,9 @@ export const SecondCounterDisplay = (props: Props) => {
     return (
         <div className={s.counterDisplay}>
             <div className={isChanged ? s.countBlock : blockRender}>
-                {isError && <div className={s.error}>{props.error}</div>}
+                {
+                    errorToShow() && <div className={s.error}>{errorToShow()}</div>
+                }
                 {isMessage && <div className={s.setMessage}>set values and press 'set'</div>}
                 {!isMessage && !isError && <div className={isMaxValue ? s.maxValue : ''}>{count}</div>}
             </div>
