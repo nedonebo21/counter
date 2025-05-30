@@ -24,22 +24,25 @@ export const SecondCounterDisplay = (props: Props) => {
         if (count > props.minValue) setCount(props.minValue)
     }
 
-    const errorToShow = () => {
+    const messageToShow = (): {text: string, isError: boolean} => {
         if (inputError.lastChanged === 'min' && inputError.min){
-            return inputError.min
+            return {text: inputError.min, isError: true}
         } else if (inputError.lastChanged === 'max' && inputError.max){
-            return inputError.max
+            return {text:inputError.max, isError:true}
         } else if (inputError.min){
-            return inputError.min
+            return {text: inputError.min, isError:true}
         } else if (inputError.max){
-            return inputError.max
+            return {text: inputError.max, isError:true}
         }
-        return
+
+        if (isChanged){
+            return {text: `enter your values and press 'save'`, isError: false}
+        }
+        return {text: '', isError: false}
     }
+    const {text, isError} = messageToShow()
 
     const blockRender = count === props.maxValue ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
-    const isError = !!Object.keys(inputError).length
-    const isMessage = !Object.keys(inputError).length && isChanged
     const isMaxValue = count === props.maxValue
     const isIncDisabled = count === props.maxValue || isError || isChanged
     const isDecDisabled = count === props.minValue || isError
@@ -48,11 +51,8 @@ export const SecondCounterDisplay = (props: Props) => {
     return (
         <div className={s.counterDisplay}>
             <div className={isChanged ? s.countBlock : blockRender}>
-                {
-                    errorToShow() && <div className={s.error}>{errorToShow()}</div>
-                }
-                {isMessage && <div className={s.setMessage}>set values and press 'set'</div>}
-                {!isMessage && !isError && <div className={isMaxValue ? s.maxValue : ''}>{count}</div>}
+                {text && <div className={isError ? s.error : s.setMessage}>{text}</div>}
+                {!text && <div className={isMaxValue ? s.maxValue : ''}>{count}</div>}
             </div>
             <div className={s.btnBlock}>
                 <Button disabled={isIncDisabled} onClick={handleIncrement}>inc</Button>
