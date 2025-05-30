@@ -13,6 +13,11 @@ export type ValuesType = {
     minDefaultValue: number
     maxDefaultValue: number
 }
+export type InputErrorsType = {
+    min?: string
+    max?: string
+    lastChanged?: 'min' | 'max'
+}
 const defaultValues: ValuesType = {
     minDefaultValue: 2,
     maxDefaultValue: 10
@@ -28,7 +33,8 @@ export const Counter = (props: Props) => {
     })
     const {min, max} = values
 
-    const [error, setError] = useState<string | null>(null)
+    const [inputError, setInputError] = useState<InputErrorsType>({})
+    const [isChanged, setIsChanged] = useState<boolean>(false)
     const [status, setStatus] = useState<StatusType>('preparing')
     const [isFirstEntry, setIsFirstEntry] = useState(true)
 
@@ -58,12 +64,14 @@ export const Counter = (props: Props) => {
             {
                 isStatusPreparing &&
                     <CounterSettings
+                        setInputError={setInputError}
+                        inputError={inputError}
                         minValueCount={min}
                         maxValueCount={max}
                         defaultValues={defaultValues}
                         setStatus={setStatus}
-                        error={error}
-                        setError={setError}
+                        setIsChanged={setIsChanged}
+                        isChanged={isChanged}
                         updateCounter={updateCounter}
                         isFirstEntry={isFirstEntry}
                     />
@@ -72,7 +80,7 @@ export const Counter = (props: Props) => {
                 isStatusCounting &&
                 <CounterDisplay
                     status={status}
-                    error={error}
+                    inputError={inputError}
                     minValue={min}
                     maxValue={max}
                     setCount={setCount}
