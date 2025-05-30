@@ -12,6 +12,12 @@ const defaultValues: ValuesType = {
     minDefaultValue: 2,
     maxDefaultValue: 10
 }
+export type InputErrorsType = {
+    min?: string
+    max?: string
+    lastChanged?: 'min' | 'max'
+}
+
 type Props = {
     min?: number
     max?: number
@@ -20,12 +26,13 @@ type Props = {
 export const SecondCounter = (props: Props) => {
     const {minDefaultValue, maxDefaultValue} = defaultValues
 
-    const [count, setCount] = useState<number>(props.min ?? minDefaultValue )
+    const [count, setCount] = useState<number>(props.min ?? minDefaultValue)
     const [values, setValues] = useState({
         min: props.min ?? minDefaultValue,
         max: props.max ?? maxDefaultValue,
     })
-    const [error, setError] = useState<string | null>(null)
+    const [inputError, setInputError] = useState<InputErrorsType>({})
+
     const [status, setStatus] = useState<StatusType>('counting')
     const [isChanged, setIsChanged] = useState<boolean>(false)
     const isStatusPreparing = status === 'preparing' || isChanged
@@ -37,30 +44,29 @@ export const SecondCounter = (props: Props) => {
     }
     const counterBlockClass = () => {
         const classesArr = [s.counter]
-        if(isStatusPreparing) return classesArr.join(' ')
-        if(isStatusCounting) classesArr.push(s.counting)
-        if(count === values.max) classesArr.push(s.maxCount)
+        if (isStatusPreparing) return classesArr.join(' ')
+        if (isStatusCounting) classesArr.push(s.counting)
+        if (count === values.max) classesArr.push(s.maxCount)
         return classesArr.join(' ')
     }
-
 
     return (
         <div className={counterBlockClass()}>
             <SecondCounterSettings
-            error={error}
-            setError={setError}
-            updateCounter={updateCounter}
-            minValue={values.min}
-            maxValue={values.max}
-            setStatus={setStatus}
-            setIsChanged={setIsChanged}
+                setInputError={setInputError}
+                inputError={inputError}
+                updateCounter={updateCounter}
+                minValue={values.min}
+                maxValue={values.max}
+                setStatus={setStatus}
+                setIsChanged={setIsChanged}
             />
             <SecondCounterDisplay
                 setCount={setCount}
                 count={count}
                 minValue={values.min}
                 maxValue={values.max}
-                error={error}
+                inputError={inputError}
                 isChanged={isChanged}
             />
         </div>
