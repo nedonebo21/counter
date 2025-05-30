@@ -40,11 +40,9 @@ export const CounterDisplay = (props: Props) => {
 
     const blockRender = count === maxValue ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
 
-    const isErrorStatus = isStatusPreparing || !!Object.keys(props.inputError).length
-
-    const isIncDisabled = isErrorStatus || count === maxValue
-    const isDecDisabled = isErrorStatus || count === minValue
-    const isResetDisabled = isErrorStatus || count === minValue
+    const isIncDisabled =  count === maxValue
+    const isDecDisabled =  count === minValue
+    const isResetDisabled =  count === minValue
 
 
     return (
