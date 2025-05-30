@@ -15,6 +15,11 @@ type Props = {
     isFirstEntry: boolean
 }
 
+type InputErrorType = {
+    min?: string
+    max?: string
+}
+
 export const CounterSettings = (props: Props) => {
     const {updateCounter, setError, error, setStatus, minValueCount, maxValueCount,isFirstEntry} = props
 
@@ -23,6 +28,7 @@ export const CounterSettings = (props: Props) => {
         min: minValueCount,
         max: maxValueCount,
     })
+    const [inputError, setInputError] = useState<InputErrorType>({})
     const {min, max} = valuesSettings
 
 
@@ -31,8 +37,11 @@ export const CounterSettings = (props: Props) => {
             ...valuesSettings,
             [type]: value
         }
+        const tempError: InputErrorType = {}
         if (value <= -1) {
-            setError('value cannot be negative')
+            setError(`${type} value cannot be negative`)
+            tempError[type] = `${type} value cannot be negative`
+            setInputError(tempError)
             if (value === -1) {
                 setValuesSettings(inputValues)
             }
@@ -40,9 +49,12 @@ export const CounterSettings = (props: Props) => {
         }
         if (inputValues.min >= inputValues.max || isNaN(inputValues.min) || isNaN(inputValues.max)) {
             setError('max value must be greater than min')
+            tempError[type] = `max value must be greater than min`
+            setInputError(tempError)
         } else {
             setError(null)
         }
+        setInputError(tempError)
         setValuesSettings(inputValues)
     }
 
@@ -64,22 +76,19 @@ export const CounterSettings = (props: Props) => {
 
     return (
         <div className={s.counterSettings}>
-            {/*{error && <div className={s.error}>{error}</div> || !isSaveDisabled &&*/}
-            {/*    <div className={s.setMessage}>enter values and press 'set'</div>*/}
-            {/*}*/}
             <div className={error ? s.error : s.setMessage}>
                 {error ? error : !isSaveDisabled ? `enter values and press 'set'` : 'counter settings'}
             </div>
             <div>
                 <Input
-                    error={error}
+                    error={inputError.min}
                     name={'min'}
                     callback={(value) => handleValueChange(value, 'min')}
                     value={min}
                     title={'Min Value'}/>
             </div>
             <div>
-                <Input error={error}
+                <Input error={inputError.max}
                        name={'max'}
                        callback={(value) => handleValueChange(value, 'max')}
                        value={max}
