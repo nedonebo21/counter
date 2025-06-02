@@ -1,7 +1,7 @@
 import s from './second-counter.module.css'
 import {SecondCounterSettings} from "./second-counter-settings/second-counter-settings.tsx";
 import {SecondCounterDisplay} from "./second-counter-display/second-counter-display.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export type StatusType = 'counting' | 'preparing'
 export type ValuesType = {
@@ -26,17 +26,40 @@ type Props = {
 export const SecondCounter = (props: Props) => {
     const {minDefaultValue, maxDefaultValue} = defaultValues
 
-    const [count, setCount] = useState<number>(props.min ?? minDefaultValue)
-    const [values, setValues] = useState({
-        min: props.min ?? minDefaultValue,
-        max: props.max ?? maxDefaultValue,
+    const [count, setCount] = useState(() => {
+        const savedCount = localStorage.getItem('counterValue')
+        return savedCount !== null ? JSON.parse(savedCount) : (props.min ?? minDefaultValue)
     })
+    // const [values, setValues] = useState({
+    //     min: props.min ?? minDefaultValue,
+    //     max: props.max ?? maxDefaultValue,
+    // })
+
+    const [values, setValues] = useState(() => {
+        const savedMinValue = localStorage.getItem('valuesMin')
+        const savedMaxValue = localStorage.getItem('valuesMax')
+        return {
+            min: savedMinValue !== null ? JSON.parse(savedMinValue) : (props.min ?? minDefaultValue),
+            max: savedMaxValue !== null ? JSON.parse(savedMaxValue) : (props.max ?? maxDefaultValue),
+        }
+    })
+
     const [inputError, setInputError] = useState<InputErrorsType>({})
 
     const [status, setStatus] = useState<StatusType>('counting')
     const [isChanged, setIsChanged] = useState<boolean>(false)
     const isStatusPreparing = status === 'preparing' || isChanged
     const isStatusCounting = status === 'counting'
+
+    useEffect(() => {
+        localStorage.setItem('counterValue', JSON.stringify(count))
+    }, [count]);
+    useEffect(() => {
+        localStorage.setItem('valuesMin', JSON.stringify(values.min))
+    }, [values.min]);
+    useEffect(() => {
+        localStorage.setItem('valuesMax', JSON.stringify(values.max))
+    }, [values.max]);
 
     const updateCounter = (min: number, max: number) => {
         setValues({min, max})

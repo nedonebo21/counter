@@ -5,7 +5,7 @@ export const HomePage = () => {
     return (
         <div className={"wrapper"}>
             <Counter/>
-            <SecondCounter min={5} max={7}/>
+            <SecondCounter/>
         </div>
     )
 }
