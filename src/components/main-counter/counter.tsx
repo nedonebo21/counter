@@ -62,7 +62,13 @@ export const Counter = (props: Props) => {
         localStorage.setItem('counterStatus', JSON.stringify(status))
     }, [status]);
 
-    const [isFirstEntry, setIsFirstEntry] = useState(true)
+    const [isFirstEntry, setIsFirstEntry] = useState(() => {
+        const savedFirstEntry = localStorage.getItem('firstEntry')
+        return savedFirstEntry !== null ? JSON.parse(savedFirstEntry) : true
+    })
+    useEffect(() => {
+        localStorage.setItem('firstEntry', JSON.stringify(isFirstEntry))
+    }, [isFirstEntry]);
 
     const updateCounter = (min: number, max: number) => {
         setValues({
