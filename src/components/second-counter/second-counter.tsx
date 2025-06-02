@@ -27,7 +27,7 @@ export const SecondCounter = (props: Props) => {
     const {minDefaultValue, maxDefaultValue} = defaultValues
 
     const [count, setCount] = useState(() => {
-        const savedCount = localStorage.getItem('counterValue')
+        const savedCount = localStorage.getItem('secondCounterValue')
         return savedCount !== null ? JSON.parse(savedCount) : (props.min ?? minDefaultValue)
     })
     // const [values, setValues] = useState({
@@ -36,8 +36,8 @@ export const SecondCounter = (props: Props) => {
     // })
 
     const [values, setValues] = useState(() => {
-        const savedMinValue = localStorage.getItem('valuesMin')
-        const savedMaxValue = localStorage.getItem('valuesMax')
+        const savedMinValue = localStorage.getItem('secondValuesMin')
+        const savedMaxValue = localStorage.getItem('secondValuesMax')
         return {
             min: savedMinValue !== null ? JSON.parse(savedMinValue) : (props.min ?? minDefaultValue),
             max: savedMaxValue !== null ? JSON.parse(savedMaxValue) : (props.max ?? maxDefaultValue),
@@ -52,13 +52,13 @@ export const SecondCounter = (props: Props) => {
     const isStatusCounting = status === 'counting'
 
     useEffect(() => {
-        localStorage.setItem('counterValue', JSON.stringify(count))
+        localStorage.setItem('secondCounterValue', JSON.stringify(count))
     }, [count]);
     useEffect(() => {
-        localStorage.setItem('valuesMin', JSON.stringify(values.min))
+        localStorage.setItem('secondValuesMin', JSON.stringify(values.min))
     }, [values.min]);
     useEffect(() => {
-        localStorage.setItem('valuesMax', JSON.stringify(values.max))
+        localStorage.setItem('secondValuesMax', JSON.stringify(values.max))
     }, [values.max]);
 
     const updateCounter = (min: number, max: number) => {
