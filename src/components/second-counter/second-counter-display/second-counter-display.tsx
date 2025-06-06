@@ -45,8 +45,8 @@ export const SecondCounterDisplay = (props: Props) => {
     const blockRender = count === props.maxValue ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
     const isMaxValue = count === props.maxValue
     const isIncDisabled = count === props.maxValue || isError || isChanged
-    const isDecDisabled = count === props.minValue || isError
-    const isResetDisabled = count === props.minValue || isError
+    const isDecDisabled = count === props.minValue || isError || isChanged
+    const isResetDisabled = count === props.minValue || isError || isChanged
 
     return (
         <div className={s.counterDisplay}>

@@ -10,8 +10,8 @@ type Props = {
     max?: number
 }
 export type ValuesType = {
-    minDefaultValue: number
-    maxDefaultValue: number
+    minDefaultValue?: number
+    maxDefaultValue?: number
 }
 export type InputErrorsType = {
     min?: string
