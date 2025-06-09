@@ -3,10 +3,14 @@
     padding: 10px;
     font-size: 18px;
     border: 2px solid #00fdfd;
-    margin: 16px 0;
+    margin: 6px 0;
     width: 100%;
 }
 .input.error {
     color: red;
     border: 2px solid #ff0000;
+}
+.errorMessage{
+    color: red;
+    font-size: 15px;
 }

@@ -3,13 +3,14 @@ import type {ReactNode} from "react";
 type ButtonProps = {
     onClick: () => void
     disabled?: boolean
+    className?: string
     children: ReactNode
 }
 
 export const Button = (props: ButtonProps) => {
-    const {onClick, disabled, children} = props
+    const { className, ...rest} = props
 
     return (
-        <button disabled={disabled} onClick={onClick} className={s.button}>{children}</button>
+        <button {...rest} className={s.button + (className ? ' ' + className : '')}/>
     )
 }

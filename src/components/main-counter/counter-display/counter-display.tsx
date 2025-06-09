@@ -1,20 +1,19 @@
 import s from '../counter.module.css'
 import {Button} from "../../../shared/ui/button/button.tsx";
-import type {InputErrorsType, StatusType} from "../counter.tsx";
+import type { StatusType} from "../counter.tsx";
 
 type Props = {
     count: number
     setCount: (count: number) => void
     minValue: number
     maxValue: number
-    inputError: InputErrorsType
     setStatus: (status: 'preparing' | 'counting') => void
     status: StatusType
     isStatusPreparing: boolean
 }
 
 export const CounterDisplay = (props: Props) => {
-    const {count, setCount, minValue, maxValue, setStatus,isStatusPreparing} = props
+    const {count, setCount, minValue, maxValue, setStatus, isStatusPreparing} = props
 
     const handleIncrement = () => {
         if (count === maxValue || isStatusPreparing) {
@@ -38,7 +37,7 @@ export const CounterDisplay = (props: Props) => {
         setStatus('preparing')
     }
 
-    const blockRender = count === maxValue ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
+    const blockClasses = count === maxValue ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
 
     const isIncDisabled =  count === maxValue
     const isDecDisabled =  count === minValue
@@ -47,7 +46,7 @@ export const CounterDisplay = (props: Props) => {
 
     return (
         <div className={s.counterDisplay}>
-            <div className={blockRender}>
+            <div className={blockClasses}>
                 <div className={count === maxValue ? s.maxValue : ''}>{count}</div>
             </div>
             <div className={s.btnBlock}>

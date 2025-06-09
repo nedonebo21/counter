@@ -1,84 +1,61 @@
 import s from './counter.module.css'
 import {CounterSettings} from "./counter-settings/counter-settings.tsx";
 import {CounterDisplay} from "./counter-display/counter-display.tsx";
-import {useEffect, useState} from "react";
+import { useState} from "react";
+import {checkValues} from "../../shared/lib/check-values.ts";
 
 export type StatusType = "preparing" | "counting" | null
 
-type Props = {
+type CounterProps = {
     min?: number
     max?: number
 }
-export type ValuesType = {
-    minDefaultValue?: number
-    maxDefaultValue?: number
-}
-export type InputErrorsType = {
+
+export type ErrorsType = {
     min?: string
     max?: string
     lastChanged?: 'min' | 'max'
 }
-const defaultValues: ValuesType = {
-    minDefaultValue: 2,
-    maxDefaultValue: 10
-}
 
-export const Counter = (props: Props) => {
-    const {minDefaultValue, maxDefaultValue} = defaultValues
-
+export const Counter = (props: CounterProps) => {
     const [count, setCount] = useState<number>(() => {
-        const savedCount = localStorage.getItem('counterValue')
-        return savedCount !== null ? JSON.parse(savedCount) : 0
+        const savedValue = localStorage.getItem('currentValue')
+        if (savedValue !== null) return JSON.parse(savedValue)
+        if (props.min !== undefined && props.max !== undefined){
+            return props.min
+        }
+        return 0
     })
-    const [values, setValues] = useState(() => {
-        const savedMinValue = localStorage.getItem('valuesMin')
-        const savedMaxValue = localStorage.getItem('valuesMax')
+    const [values, setValues] = useState<{min: number, max: number}>(() => {
+        const savedMinValue = localStorage.getItem('minValue')
+        const savedMaxValue = localStorage.getItem('maxValue')
         return {
-            min: savedMinValue !== null ? JSON.parse(savedMinValue) : (props.min ?? minDefaultValue),
-            max: savedMaxValue !== null ? JSON.parse(savedMaxValue) : (props.max ?? maxDefaultValue),
+            min: savedMinValue !== null ? JSON.parse(savedMinValue) : (props?.min ?? 0),
+            max: savedMaxValue !== null ? JSON.parse(savedMaxValue) : (props?.max ?? 0),
         }
     })
 
-    useEffect(() => {
-        localStorage.setItem('valuesMin', JSON.stringify(values.min))
-    }, [values.min]);
-    useEffect(() => {
-        localStorage.setItem('valuesMax', JSON.stringify(values.max))
-    }, [values.max]);
     const {min, max} = values
 
-    useEffect(() => {
-        localStorage.setItem('counterValue', JSON.stringify(count))
-    }, [count]);
-
-    const [inputError, setInputError] = useState<InputErrorsType>({})
-    const [isChanged, setIsChanged] = useState<boolean>(false)
+    const [errors, setErrors] = useState<ErrorsType>(checkValues(values.min, values.max))
     const [status, setStatus] = useState<StatusType>(() => {
-        const savedStatus = localStorage.getItem('counterStatus')
-        return savedStatus !== null ? JSON.parse(savedStatus) : 'preparing'
+        const savedStatus = localStorage.getItem('currentStatus')
+        if (savedStatus !== null) return JSON.parse(savedStatus)
+        if (props.min !== undefined && props.max !== undefined) {
+            return 'counting'
+        }
+        return 'preparing'
     })
 
-    useEffect(() => {
-        localStorage.setItem('counterStatus', JSON.stringify(status))
-    }, [status]);
-
-    const [isFirstEntry, setIsFirstEntry] = useState(() => {
-        const savedFirstEntry = localStorage.getItem('firstEntry')
-        return savedFirstEntry !== null ? JSON.parse(savedFirstEntry) : true
-    })
-    useEffect(() => {
-        localStorage.setItem('firstEntry', JSON.stringify(isFirstEntry))
-    }, [isFirstEntry]);
+    const isFirstEntry = count === 0
 
     const updateCounter = (min: number, max: number) => {
-        setValues({
-            ...values,
-            min,
-            max
-        })
+        localStorage.setItem('minValue', JSON.stringify(min))
+        localStorage.setItem('maxValue', JSON.stringify(max))
+        localStorage.setItem('currentValue', JSON.stringify(min))
 
+        setValues({...values, min, max})
         setCount(min)
-        setIsFirstEntry(false)
     }
     const isStatusCounting = status === 'counting'
     const isStatusPreparing = status === 'preparing'
@@ -91,19 +68,21 @@ export const Counter = (props: Props) => {
         return classesArr.join(' ')
     }
 
+    const handleStatusChange = (status: StatusType) => {
+        setStatus(status)
+        localStorage.setItem('currentStatus', JSON.stringify(status))
+    }
+
     return (
         <div className={counterBlockClass()}>
             {
                 isStatusPreparing &&
                     <CounterSettings
-                        setInputError={setInputError}
-                        inputError={inputError}
+                        setErrors={setErrors}
+                        errors={errors}
                         minValueCount={min}
                         maxValueCount={max}
-                        defaultValues={defaultValues}
-                        setStatus={setStatus}
-                        setIsChanged={setIsChanged}
-                        isChanged={isChanged}
+                        setStatus={handleStatusChange}
                         updateCounter={updateCounter}
                         isFirstEntry={isFirstEntry}
                     />
@@ -112,11 +91,13 @@ export const Counter = (props: Props) => {
                 isStatusCounting &&
                 <CounterDisplay
                     status={status}
-                    inputError={inputError}
                     minValue={min}
                     maxValue={max}
-                    setCount={setCount}
-                    setStatus={setStatus}
+                    setCount={(count) => {
+                        localStorage.setItem('currentValue', JSON.stringify(count))
+                        setCount(count)
+                    }}
+                    setStatus={handleStatusChange}
                     isStatusPreparing={isStatusPreparing}
                     count={count}/>
             }

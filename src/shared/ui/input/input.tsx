@@ -4,24 +4,25 @@ import type {ChangeEvent} from "react";
 type InputProps = {
     title: string
     value: number
-    callback: (value: number) => void
-    error?: string | null
+    onChange: (value: number) => void
+    errorMessage?: string | null
     name: string
 }
 
 export const Input = (props: InputProps) => {
-    const {title, value, callback, name, error} = props
+    const {title, value, onChange, name, errorMessage} = props
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const currentValue = parseInt(e.target.value, 10)
-        callback(currentValue)
+        onChange(currentValue)
     }
-    const isValueIncorrect =  error ? `${s.input} ${s.error}` : s.input
+    const isValueIncorrect =  errorMessage ? `${s.input} ${s.error}` : s.input
 
     return (
-        <>
-            <div>{title}:</div>
+        <label>
+            <span>{title}:</span>
             <input className={isValueIncorrect} name={name} value={value} onChange={handleChange} type="number"/>
-        </>
+            {!!errorMessage && <span className={s.errorMessage}>{errorMessage}</span>}
+        </label>
     )
 }
