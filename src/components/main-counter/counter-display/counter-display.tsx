@@ -1,61 +1,64 @@
 import s from '../counter.module.css'
 import {Button} from "../../../shared/ui/button/button.tsx";
-import type { StatusType} from "../counter.tsx";
+import {
+  changeStatusAC,
+  countDecrementAC,
+  type CounterType,
+  countIncrementAC,
+  countResetAC
+} from "../../../model/counter-reducer.ts";
+import {useAppDispatch} from "../../../shared/hooks/use-app-dispatch.ts";
 
 type Props = {
-    count: number
-    setCount: (count: number) => void
-    minValue: number
-    maxValue: number
-    setStatus: (status: 'preparing' | 'counting') => void
-    status: StatusType
-    isStatusPreparing: boolean
+  counter: CounterType
+  isStatusPreparing: boolean
 }
 
-export const CounterDisplay = (props: Props) => {
-    const {count, setCount, minValue, maxValue, setStatus, isStatusPreparing} = props
+export const CounterDisplay = ({counter, isStatusPreparing}: Props) => {
+  const {id, count, values} = counter
+  const dispatch = useAppDispatch()
 
-    const handleIncrement = () => {
-        if (count === maxValue || isStatusPreparing) {
-            return
-        }
-        setCount(props.count + 1)
+  const handleIncrement = () => {
+    if (count === values.max || isStatusPreparing) {
+      return
     }
-    const handleDecrement = () => {
-        if (count === minValue || isStatusPreparing) {
-            return
-        }
-        setCount(props.count - 1)
+    dispatch(countIncrementAC({counterId: id}))
+  }
+  const handleDecrement = () => {
+    if (count === values.min || isStatusPreparing) {
+      return
     }
-    const handleReset = () => {
-        if (count === minValue || isStatusPreparing) {
-            return
-        }
-        setCount(minValue)
+    dispatch(countDecrementAC({counterId: id}))
+  }
+  const handleReset = () => {
+    if (count === values.min || isStatusPreparing) {
+      return
     }
-    const handleSettings = () => {
-        setStatus('preparing')
-    }
+    dispatch(countResetAC({counterId: id}))
+  }
+  const handleSettings = () => {
+    dispatch(changeStatusAC({counterId: id, status: 'preparing'}))
+  }
 
-    const blockClasses = count === maxValue ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
+  const blockClasses = count === values.max ? s.countBlock + ' ' + s.maxValueCount : s.countBlock
 
-    const isIncDisabled =  count === maxValue
-    const isDecDisabled =  count === minValue
-    const isResetDisabled =  count === minValue
+  const isIncDisabled = count === values.max
+  const isDecDisabled = count === values.min
+  const isResetDisabled = count === values.min
 
 
-    return (
-        <div className={s.counterDisplay}>
-            <div className={blockClasses}>
-                <div className={count === maxValue ? s.maxValue : ''}>{count}</div>
-            </div>
-            <div className={s.btnBlock}>
-                <Button disabled={isIncDisabled} onClick={handleIncrement}>inc</Button>
-                <Button disabled={isDecDisabled} onClick={handleDecrement}>dec</Button>
-                <Button disabled={isResetDisabled} onClick={handleReset}>reset</Button>
-
-                <Button onClick={handleSettings}>settings</Button>
-            </div>
+  return (
+      <div className={s.counterDisplay}>
+        <div className={blockClasses}>
+          <div className={count === values.max ? s.maxValue : ''}>{count}</div>
         </div>
-    )
+        <div className={s.btnBlock}>
+          <Button disabled={isIncDisabled} onClick={handleIncrement}>inc</Button>
+          <Button disabled={isDecDisabled} onClick={handleDecrement}>dec</Button>
+          <Button disabled={isResetDisabled} onClick={handleReset}>reset</Button>
+
+          <Button onClick={handleSettings}>settings</Button>
+        </div>
+      </div>
+  )
 }
