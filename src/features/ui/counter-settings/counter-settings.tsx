@@ -8,7 +8,7 @@ import {
   type CounterType,
   setErrorsAC,
   updateCounterAC
-} from "../../../model/counter-reducer.ts";
+} from "../../model/counter-reducer.ts";
 import {useAppDispatch} from "../../../shared/hooks/use-app-dispatch.ts";
 
 type Props = {

@@ -1,10 +1,10 @@
-import {Counter} from "../components/main-counter/counter.tsx";
+import {Counter} from "../features/ui/counter.tsx";
 import {useAppSelector} from "../shared/hooks/use-app-selector.ts";
-import {selectCounter} from "../model/counter-selectors.ts";
+import {selectCounter} from "../features/model/counter-selectors.ts";
 import {useDispatch} from "react-redux";
 import {Button} from "../shared/ui/button/button.tsx";
-import {addCounterAC} from "../model/counter-reducer.ts";
-import s from '../components/main-counter/counter.module.css'
+import {addCounterAC} from "../features/model/counter-reducer.ts";
+import s from '../features/ui/counter.module.css'
 
 export const HomePage = () => {
   const counter = useAppSelector(selectCounter)

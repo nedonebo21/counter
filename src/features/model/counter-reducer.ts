@@ -1,6 +1,6 @@
-import type {ErrorsType, StatusType} from "../components/main-counter/counter.tsx";
+import type {ErrorsType, StatusType} from "../ui/counter.tsx";
 import {createAction, createReducer, nanoid} from "@reduxjs/toolkit";
-import {checkValues} from "../shared/lib/check-values.ts";
+import {checkValues} from "../../shared/lib/check-values.ts";
 
 const initialState: CounterType[] = [
   {
@@ -9,7 +9,7 @@ const initialState: CounterType[] = [
     status: 'preparing',
     values: { min: 0, max: 0 },
     settings: { min: 0, max: 0 },
-    errors: {max: 'must be > 0'},
+    errors: {max: 'max value must be > 0'},
   }
 ]
 export const updateCounterAC = createAction<{ counterId: string, min: number, max: number }>('counter/updateCounter')

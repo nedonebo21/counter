@@ -1,4 +1,4 @@
-import type {ErrorsType} from "../../components/main-counter/counter.tsx";
+import type {ErrorsType} from "../../features/ui/counter.tsx";
 
 export const checkValues = (min?: number, max?: number) => {
     const errors: ErrorsType = {}

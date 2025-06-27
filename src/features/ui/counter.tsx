@@ -1,7 +1,7 @@
 import s from './counter.module.css'
 import {CounterSettings} from "./counter-settings/counter-settings.tsx";
 import {CounterDisplay} from "./counter-display/counter-display.tsx";
-import {type CounterType} from "../../model/counter-reducer.ts";
+import {type CounterType} from "../model/counter-reducer.ts";
 
 export type StatusType = "preparing" | "counting" | null
 
