@@ -1,10 +1,8 @@
 @import './reset.css';
-.wrapper {
+body{
     background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+}
+.wrapper {
+    display: grid;
+    gap: 20px;
 }
