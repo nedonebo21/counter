@@ -17,28 +17,19 @@ export type ErrorsType = {
 
 export const Counter = (props: CounterProps) => {
   const {count, status, values} = props.counter
-  const isFirstEntry = count === null
+
   const isStatusCounting = status === 'counting'
   const isStatusPreparing = status === 'preparing'
 
-  const counterBlockClass = () => {
-    const classesArr = [s.counter]
-    if (isStatusPreparing) return classesArr.join(' ')
-    if (isStatusCounting) classesArr.push(s.counting)
-    if (count === values.max) classesArr.push(s.maxCount)
-    return classesArr.join(' ')
-  }
+  const counterBlockClasses = s.counter
+      + (isStatusCounting ? ' ' + s.counting : '')
+      + (count === values.max && status === 'counting' ? ' ' + s.maxCount : '')
+      + (isStatusPreparing ? ' ' + s.preparing : '')
 
   return (
-      <div className={counterBlockClass()}>
-        {
-            isStatusPreparing &&
-            <CounterSettings counter={props.counter} isFirstEntry={isFirstEntry}/>
-        }
-        {
-            isStatusCounting &&
-            <CounterDisplay isStatusPreparing={isStatusPreparing} counter={props.counter}/>
-        }
+      <div className={counterBlockClasses}>
+        {isStatusPreparing && <CounterSettings counter={props.counter}/>}
+        {isStatusCounting && <CounterDisplay isStatusPreparing={isStatusPreparing} counter={props.counter}/>}
       </div>
   )
 }
