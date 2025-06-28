@@ -12,13 +12,15 @@
     gap: 16px;
     width: 500px;
     height: 600px;
-    background-image: url("https://cs13.pikabu.ru/post_img/2024/03/16/7/171058378515879414.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 
     border: 2px solid rgb(60, 230, 255);
     padding: 20px;
+}
+.counter.preparing{
+    background-image: url("https://cs13.pikabu.ru/post_img/2024/03/16/7/171058378515879414.jpg");
 }
 .counter.counting {
     background-image: url("https://sun9-43.userapi.com/c909218/u581036802/d5/-3/x_d7fe7bc303.jpg")
